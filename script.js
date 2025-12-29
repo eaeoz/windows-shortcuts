@@ -185,6 +185,165 @@ async function createWallpaper(data) {
   return outputPath;
 }
 
+// Geniş ekran Full HD masaüstü resmi oluştur (1920x1080)
+async function createWidescreenWallpaper(data) {
+  console.log('🎨 Geniş ekran Full HD masaüstü resmi oluşturuluyor...');
+  
+  const { meta, sections } = data;
+  const width = 1920;
+  const height = 1080;
+  
+  const canvas = createCanvas(width, height);
+  const ctx = canvas.getContext('2d');
+  
+  // Arka plan
+  const gradient = ctx.createLinearGradient(0, 0, width, height);
+  gradient.addColorStop(0, '#0d1117');
+  gradient.addColorStop(1, '#161b22');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
+  
+  // Çerçeve
+  ctx.strokeStyle = meta.colors.primary;
+  ctx.lineWidth = 3;
+  ctx.strokeRect(20, 20, width - 40, height - 40);
+  
+  // Başlık
+  ctx.fillStyle = meta.colors.primary;
+  ctx.font = 'bold 42px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(meta.title, width / 2, 70);
+  
+  ctx.fillStyle = '#58a6ff';
+  ctx.font = '22px Arial';
+  ctx.fillText(meta.subtitle, width / 2, 105);
+  
+  // Dört sütun düzeni
+  const margin = 40;
+  const colWidth = (width - margin * 5) / 4;
+  const col1X = margin;
+  const col2X = margin + colWidth + margin;
+  const col3X = margin + (colWidth + margin) * 2;
+  const col4X = margin + (colWidth + margin) * 3;
+  const startY = 150;
+  
+  // Her sütun için ayrı fonksiyon
+  function drawSection(section, x, y, maxItems = null) {
+    let currentY = y;
+    
+    // Bölüm başlığı
+    ctx.fillStyle = section.color;
+    ctx.font = 'bold 22px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(section.title, x, currentY);
+    
+    currentY += 35;
+    
+    // Maddeler
+    ctx.font = '15px Arial';
+    
+    const itemsToShow = maxItems ? section.items.slice(0, maxItems) : section.items;
+    
+    itemsToShow.forEach((item) => {
+      // Nokta
+      ctx.fillStyle = section.color;
+      ctx.beginPath();
+      ctx.arc(x, currentY - 5, 4, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Komut
+      ctx.fillStyle = meta.colors.text;
+      const commandText = item.command;
+      ctx.fillText(commandText, x + 12, currentY);
+      
+      // Açıklama
+      ctx.fillStyle = '#8b949e';
+      ctx.font = '13px Arial';
+      const descText = `– ${item.description}`;
+      ctx.fillText(descText, x + 12, currentY + 18);
+      ctx.font = '15px Arial';
+      
+      currentY += 36;
+    });
+    
+    return currentY;
+  }
+  
+  // Bölümleri dört sütuna dağıt
+  if (sections.length >= 3) {
+    drawSection(sections[0], col1X, startY);  // MSC
+    drawSection(sections[1], col2X, startY);  // CPL
+    
+    // Klavye kısayollarını iki sütuna böl
+    const keyboardShortcuts = sections[2];
+    const halfPoint = Math.ceil(keyboardShortcuts.items.length / 2);
+    
+    // Sol yarı - başlıkla birlikte
+    let keyboardY = startY;
+    ctx.fillStyle = keyboardShortcuts.color;
+    ctx.font = 'bold 22px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(keyboardShortcuts.title, col3X, keyboardY);
+    keyboardY += 35;
+    
+    ctx.font = '15px Arial';
+    keyboardShortcuts.items.slice(0, halfPoint).forEach((item) => {
+      ctx.fillStyle = keyboardShortcuts.color;
+      ctx.beginPath();
+      ctx.arc(col3X, keyboardY - 5, 4, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.fillStyle = meta.colors.text;
+      ctx.fillText(item.command, col3X + 12, keyboardY);
+      
+      ctx.fillStyle = '#8b949e';
+      ctx.font = '13px Arial';
+      ctx.fillText(`– ${item.description}`, col3X + 12, keyboardY + 18);
+      ctx.font = '15px Arial';
+      
+      keyboardY += 36;
+    });
+    
+    // Sağ yarı - başlık olmadan
+    keyboardY = startY + 35;
+    keyboardShortcuts.items.slice(halfPoint).forEach((item) => {
+      ctx.fillStyle = keyboardShortcuts.color;
+      ctx.beginPath();
+      ctx.arc(col4X, keyboardY - 5, 4, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.fillStyle = meta.colors.text;
+      ctx.fillText(item.command, col4X + 12, keyboardY);
+      
+      ctx.fillStyle = '#8b949e';
+      ctx.font = '13px Arial';
+      ctx.fillText(`– ${item.description}`, col4X + 12, keyboardY + 18);
+      ctx.font = '15px Arial';
+      
+      keyboardY += 36;
+    });
+  }
+  
+  // Alt bilgi
+  ctx.fillStyle = '#8b949e';
+  ctx.font = '16px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(meta.footer, width / 2, height - 30);
+  
+  // Kaydet
+  const outputDir = argv.output;
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+  
+  const buffer = canvas.toBuffer('image/png');
+  const outputPath = path.join(outputDir, 'windows-shortcuts-wallpaper-widescreen.png');
+  fs.writeFileSync(outputPath, buffer);
+  
+  console.log(`✅ Geniş ekran masaüstü resmi oluşturuldu: ${outputPath}`);
+  return outputPath;
+}
+
 // PDF oluştur
 async function createPDF(data) {
   console.log('📄 PDF dokümanı oluşturuluyor...');
@@ -804,6 +963,7 @@ async function main() {
     // İşlemleri yürüt
     if (argv.all || (!argv.wallpaper && !argv.pdf && !argv.html)) {
       await createWallpaper(data);
+      await createWidescreenWallpaper(data);
       await createPDF(data);
       await createHTML(data);
       
@@ -811,12 +971,14 @@ async function main() {
       console.log(`📁 Çıktı klasörü: ${path.resolve(outputDir)}`);
       console.log('\n📂 Oluşturulan dosyalar:');
       console.log('   • index.html (Web arayüzü)');
-      console.log('   • windows-shortcuts-wallpaper.png (Masaüstü resmi)');
+      console.log('   • windows-shortcuts-wallpaper.png (Dikey masaüstü resmi - 1080x1920)');
+      console.log('   • windows-shortcuts-wallpaper-widescreen.png (Geniş ekran - 1920x1080)');
       console.log('   • windows-shortcuts-guide.pdf (PDF rehber)');
       console.log(`\n👉 Tarayıcıda açmak için: file://${path.resolve(outputDir, 'index.html')}`);
       
     } else if (argv.wallpaper) {
       await createWallpaper(data);
+      await createWidescreenWallpaper(data);
     } else if (argv.pdf) {
       await createPDF(data);
     } else if (argv.html) {
