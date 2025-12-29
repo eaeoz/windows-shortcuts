@@ -225,7 +225,7 @@ async function createWidescreenWallpaper(data) {
   const col2X = margin + colWidth + margin;
   const col3X = margin + (colWidth + margin) * 2;
   const col4X = margin + (colWidth + margin) * 3;
-  const startY = 150;
+  const startY = 170;
   
   // Her sütun için ayrı fonksiyon
   function drawSection(section, x, y, maxItems = null) {
