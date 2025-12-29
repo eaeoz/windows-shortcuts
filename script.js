@@ -98,7 +98,7 @@ async function createWallpaper(data) {
   const rightX = leftX + colWidth;
   
   // Sol sütun çizimi
-  let leftY = 200;
+  let leftY = 220;
   leftSections.forEach((section) => {
     // Bölüm başlığı
     ctx.fillStyle = section.color;
@@ -110,7 +110,7 @@ async function createWallpaper(data) {
     
     // Maddeler
     ctx.fillStyle = meta.colors.text;
-    ctx.font = `${wallpaper.fontSizes.item}px Arial`;
+    ctx.font = `${wallpaper.fontSizes.item + 4}px Arial`;
     
     section.items.forEach((item, itemIndex) => {
       // Nokta
@@ -123,16 +123,18 @@ async function createWallpaper(data) {
       ctx.fillStyle = meta.colors.text;
       ctx.fillText(item.command, leftX + 15, leftY);
       ctx.fillStyle = '#8b949e';
-      ctx.fillText(`– ${item.description}`, leftX + 15, leftY + 22);
+      ctx.font = `${wallpaper.fontSizes.item + 2}px Arial`;
+      ctx.fillText(`– ${item.description}`, leftX + 15, leftY + 26);
+      ctx.font = `${wallpaper.fontSizes.item + 4}px Arial`;
       
-      leftY += 50;
+      leftY += 65;
     });
     
     leftY += 30; // Bölümler arası boşluk
   });
   
   // Sağ sütun çizimi
-  let rightY = 200;
+  let rightY = 220;
   rightSections.forEach((section) => {
     // Bölüm başlığı
     ctx.fillStyle = section.color;
@@ -144,7 +146,7 @@ async function createWallpaper(data) {
     
     // Maddeler
     ctx.fillStyle = meta.colors.text;
-    ctx.font = `${wallpaper.fontSizes.item}px Arial`;
+    ctx.font = `${wallpaper.fontSizes.item + 4}px Arial`;
     
     section.items.forEach((item, itemIndex) => {
       // Nokta
@@ -157,9 +159,11 @@ async function createWallpaper(data) {
       ctx.fillStyle = meta.colors.text;
       ctx.fillText(item.command, rightX + 15, rightY);
       ctx.fillStyle = '#8b949e';
-      ctx.fillText(`– ${item.description}`, rightX + 15, rightY + 22);
+      ctx.font = `${wallpaper.fontSizes.item + 2}px Arial`;
+      ctx.fillText(`– ${item.description}`, rightX + 15, rightY + 26);
+      ctx.font = `${wallpaper.fontSizes.item + 4}px Arial`;
       
-      rightY += 50;
+      rightY += 65;
     });
     
     rightY += 30; // Bölümler arası boşluk
