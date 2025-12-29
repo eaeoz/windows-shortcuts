@@ -263,7 +263,7 @@ async function createWidescreenWallpaper(data) {
       ctx.fillText(descText, x + 12, currentY + 18);
       ctx.font = '15px Arial';
       
-      currentY += 36;
+      currentY += 42;
     });
     
     return currentY;
@@ -301,7 +301,7 @@ async function createWidescreenWallpaper(data) {
       ctx.fillText(`– ${item.description}`, col3X + 12, keyboardY + 18);
       ctx.font = '15px Arial';
       
-      keyboardY += 36;
+      keyboardY += 42;
     });
     
     // Sağ yarı - başlık olmadan
@@ -320,7 +320,7 @@ async function createWidescreenWallpaper(data) {
       ctx.fillText(`– ${item.description}`, col4X + 12, keyboardY + 18);
       ctx.font = '15px Arial';
       
-      keyboardY += 36;
+      keyboardY += 42;
     });
   }
   
