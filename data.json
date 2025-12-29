@@ -87,15 +87,15 @@
   ],
   "layouts": {
     "wallpaper": {
-      "width": 1920,
-      "height": 1080,
-      "columns": 3,
+      "width": 1080,
+      "height": 1920,
+      "columns": 2,
       "fontSizes": {
-        "title": 52,
-        "subtitle": 28,
-        "section": 32,
-        "item": 24,
-        "footer": 20
+        "title": 48,
+        "subtitle": 24,
+        "section": 28,
+        "item": 20,
+        "footer": 18
       }
     },
     "pdf": {

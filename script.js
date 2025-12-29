@@ -89,37 +89,80 @@ async function createWallpaper(data) {
   ctx.font = `${wallpaper.fontSizes.subtitle}px Arial`;
   ctx.fillText(meta.subtitle, width / 2, 150);
   
-  // Bölümleri hesapla
-  const colWidth = (width - 200) / wallpaper.columns;
+  // Sol sütun: MSC ve CPL
+  const leftSections = sections.slice(0, 2); // MSC ve CPL
+  const rightSections = sections.slice(2); // Klavye Kısayolları
   
-  sections.forEach((section, sectionIndex) => {
-    const x = 100 + (sectionIndex * colWidth);
-    const y = 220;
-    
+  const colWidth = (width - 120) / 2;
+  const leftX = 60;
+  const rightX = leftX + colWidth;
+  
+  // Sol sütun çizimi
+  let leftY = 200;
+  leftSections.forEach((section) => {
     // Bölüm başlığı
     ctx.fillStyle = section.color;
     ctx.font = `bold ${wallpaper.fontSizes.section}px Arial`;
     ctx.textAlign = 'left';
-    ctx.fillText(section.title, x, y);
+    ctx.fillText(section.title, leftX, leftY);
+    
+    leftY += 50;
     
     // Maddeler
     ctx.fillStyle = meta.colors.text;
     ctx.font = `${wallpaper.fontSizes.item}px Arial`;
     
     section.items.forEach((item, itemIndex) => {
-      const itemY = y + 60 + (itemIndex * 45);
-      
       // Nokta
-      ctx.fillStyle = meta.colors.primary;
+      ctx.fillStyle = section.color;
       ctx.beginPath();
-      ctx.arc(x, itemY - 8, 6, 0, Math.PI * 2);
+      ctx.arc(leftX, leftY - 6, 5, 0, Math.PI * 2);
       ctx.fill();
       
       // Metin
       ctx.fillStyle = meta.colors.text;
-      ctx.fillText(item.command, x + 20, itemY);
-      ctx.fillText(`– ${item.description}`, x + 220, itemY);
+      ctx.fillText(item.command, leftX + 15, leftY);
+      ctx.fillStyle = '#8b949e';
+      ctx.fillText(`– ${item.description}`, leftX + 15, leftY + 22);
+      
+      leftY += 42;
     });
+    
+    leftY += 30; // Bölümler arası boşluk
+  });
+  
+  // Sağ sütun çizimi
+  let rightY = 200;
+  rightSections.forEach((section) => {
+    // Bölüm başlığı
+    ctx.fillStyle = section.color;
+    ctx.font = `bold ${wallpaper.fontSizes.section}px Arial`;
+    ctx.textAlign = 'left';
+    ctx.fillText(section.title, rightX, rightY);
+    
+    rightY += 50;
+    
+    // Maddeler
+    ctx.fillStyle = meta.colors.text;
+    ctx.font = `${wallpaper.fontSizes.item}px Arial`;
+    
+    section.items.forEach((item, itemIndex) => {
+      // Nokta
+      ctx.fillStyle = section.color;
+      ctx.beginPath();
+      ctx.arc(rightX, rightY - 6, 5, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Metin
+      ctx.fillStyle = meta.colors.text;
+      ctx.fillText(item.command, rightX + 15, rightY);
+      ctx.fillStyle = '#8b949e';
+      ctx.fillText(`– ${item.description}`, rightX + 15, rightY + 22);
+      
+      rightY += 42;
+    });
+    
+    rightY += 30; // Bölümler arası boşluk
   });
   
   // Alt bilgi
