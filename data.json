@@ -100,13 +100,18 @@
     },
     "pdf": {
       "pageSize": "A4",
-      "margins": 50,
+      "margins": {
+        "top": 15,
+        "bottom": 15,
+        "left": 30,
+        "right": 30
+      },
       "fontSizes": {
-        "title": 24,
-        "subtitle": 14,
-        "section": 16,
-        "item": 11,
-        "footer": 10
+        "title": 22,
+        "subtitle": 12,
+        "section": 14,
+        "item": 10,
+        "footer": 9
       }
     }
   }

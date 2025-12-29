@@ -151,7 +151,8 @@ async function createPDF(data) {
   
   const doc = new PDFDocument({
     size: pdf.pageSize,
-    margin: pdf.margins,
+    margins: pdf.margins,
+    bufferPages: true,
     info: {
       Title: meta.title,
       Author: 'Windows Kullanım Kılavuzu',
@@ -159,6 +160,21 @@ async function createPDF(data) {
       Keywords: 'windows, shortcuts, msc, cpl, klavye'
     }
   });
+  
+  // Türkçe karakter desteği için font kaydet
+  try {
+    const fontPath = path.join(process.env.SystemRoot || 'C:\\Windows', 'Fonts', 'arial.ttf');
+    const fontBoldPath = path.join(process.env.SystemRoot || 'C:\\Windows', 'Fonts', 'arialbd.ttf');
+    
+    if (fs.existsSync(fontPath)) {
+      doc.registerFont('Arial', fontPath);
+    }
+    if (fs.existsSync(fontBoldPath)) {
+      doc.registerFont('Arial-Bold', fontBoldPath);
+    }
+  } catch (e) {
+    console.log('⚠️  Arial font yüklenemedi, varsayılan font kullanılacak');
+  }
   
   const outputDir = argv.output;
   if (!fs.existsSync(outputDir)) {
@@ -170,105 +186,114 @@ async function createPDF(data) {
   doc.pipe(stream);
   
   // Başlık
+  const useArialFont = fs.existsSync(path.join(process.env.SystemRoot || 'C:\\Windows', 'Fonts', 'arial.ttf'));
+  
   doc.fontSize(pdf.fontSizes.title)
      .fillColor(meta.colors.primary)
-     .font('Helvetica-Bold')
+     .font(useArialFont ? 'Arial-Bold' : 'Helvetica-Bold')
      .text(meta.title, { align: 'center' });
   
-  doc.moveDown(0.5);
+  doc.moveDown(0.3);
   
   doc.fontSize(pdf.fontSizes.subtitle)
      .fillColor('#666')
-     .font('Helvetica-Oblique')
+     .font(useArialFont ? 'Arial' : 'Helvetica')
      .text(meta.subtitle, { align: 'center' });
   
-  doc.moveDown(1);
+  doc.moveDown(0.8);
   
   // Her bölüm için
   sections.forEach(section => {
     // Bölüm başlığı
     doc.fontSize(pdf.fontSizes.section)
        .fillColor(section.color)
-       .font('Helvetica-Bold')
+       .font(useArialFont ? 'Arial-Bold' : 'Helvetica-Bold')
        .text(`${section.icon} ${section.title.split(' ').slice(1).join(' ')}`);
     
-    doc.moveDown(0.5);
+    doc.moveDown(0.3);
     
     // Maddeler
     doc.fontSize(pdf.fontSizes.item)
        .fillColor('#333')
-       .font('Helvetica');
+       .font(useArialFont ? 'Arial' : 'Helvetica');
     
     const itemsPerColumn = Math.ceil(section.items.length / 2);
     const col1 = section.items.slice(0, itemsPerColumn);
     const col2 = section.items.slice(itemsPerColumn);
     
     const maxItems = Math.max(col1.length, col2.length);
+    const leftX = 72; // Sol margin
+    const rightX = 300; // Sağ sütun başlangıcı
+    const itemHeight = 18; // Her satır yüksekliği
     
     for (let i = 0; i < maxItems; i++) {
-      let y = doc.y;
+      const currentY = doc.y;
+      
+      // Sayfa kontrolü - eğer yeterli alan yoksa yeni sayfa
+      if (currentY > 700) {
+        doc.addPage();
+      }
       
       // Sol sütun
       if (col1[i]) {
-        doc.text(`  • ${col1[i].command}`, { 
-          continued: true,
-          width: 250
-        })
-        .fillColor('#666')
-        .text(` – `, { continued: true })
-        .fillColor('#333')
-        .text(col1[i].description);
-        
-        doc.y = y;
+        const leftText = `• ${col1[i].command} – ${col1[i].description}`;
+        doc.fillColor('#333')
+           .font(useArialFont ? 'Arial' : 'Helvetica')
+           .text(leftText, leftX, currentY, { 
+             width: 220,
+             lineGap: 2
+           });
       }
       
       // Sağ sütun
       if (col2[i]) {
-        doc.text(`  • ${col2[i].command}`, 300, y, { 
-          continued: true,
-          width: 250
-        })
-        .fillColor('#666')
-        .text(` – `, { continued: true })
-        .fillColor('#333')
-        .text(col2[i].description);
-        
-        if (col1[i]) {
-          doc.y = y + 20;
-        } else {
-          doc.y = y;
-        }
+        const rightText = `• ${col2[i].command} – ${col2[i].description}`;
+        doc.fillColor('#333')
+           .font(useArialFont ? 'Arial' : 'Helvetica')
+           .text(rightText, rightX, currentY, { 
+             width: 220,
+             lineGap: 2
+           });
       }
       
-      doc.moveDown(0.5);
+      // Sonraki satıra geç
+      doc.y = currentY + itemHeight;
     }
     
     doc.moveDown(1);
   });
   
-  // Alt bilgi
-  doc.addPage();
-  doc.fontSize(pdf.fontSizes.footer)
-     .fillColor('#666')
-     .font('Helvetica-Oblique')
-     .text(meta.footer, { align: 'center' });
-  
-  doc.moveDown(2);
-  
-  // İstatistikler
+  // Alt bilgi ve İstatistikler - sadece sayfa sonunda yeterli alan varsa ekle
+  const currentY = doc.y;
+  const pageHeight = doc.page.height - doc.page.margins.bottom;
   const totalItems = sections.reduce((sum, section) => sum + section.items.length, 0);
-  doc.fontSize(12)
-     .fillColor('#333')
-     .font('Helvetica')
-     .text('📊 İstatistikler:', { underline: true });
+  const statsHeight = 150; // İstatistikler için gereken yaklaşık alan
   
-  doc.moveDown(0.5);
-  
-  sections.forEach(section => {
-    doc.text(`  ${section.icon} ${section.title.split(' ').slice(1).join(' ')}: ${section.items.length} öğe`);
-  });
-  
-  doc.text(`  📈 Toplam: ${totalItems} kısayol ve komut`);
+  // Eğer mevcut sayfada yeterli alan varsa alt bilgiyi ekle
+  if (currentY + statsHeight < pageHeight) {
+    doc.moveDown(2);
+    doc.fontSize(pdf.fontSizes.footer)
+       .fillColor('#666')
+       .font(useArialFont ? 'Arial' : 'Helvetica')
+       .text(meta.footer, { align: 'center' });
+    
+    doc.moveDown(1);
+    
+    // İstatistikler
+    doc.fontSize(10)
+       .fillColor('#333')
+       .font(useArialFont ? 'Arial-Bold' : 'Helvetica-Bold')
+       .text('📊 İstatistikler:', { underline: true });
+    
+    doc.moveDown(0.3);
+    
+    doc.font(useArialFont ? 'Arial' : 'Helvetica');
+    sections.forEach(section => {
+      doc.text(`  ${section.icon} ${section.title.split(' ').slice(1).join(' ')}: ${section.items.length} öğe`);
+    });
+    
+    doc.text(`  📈 Toplam: ${totalItems} kısayol ve komut`);
+  }
   
   // Sonlandır
   doc.end();
