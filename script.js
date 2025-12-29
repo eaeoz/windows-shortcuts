@@ -269,59 +269,60 @@ async function createWidescreenWallpaper(data) {
     return currentY;
   }
   
-  // Bölümleri dört sütuna dağıt
+  // Bölümleri dört sütuna dağıt - Klavye kısayolları solda, MSC ve CPL sağda
   if (sections.length >= 3) {
-    drawSection(sections[0], col1X, startY);  // MSC
-    drawSection(sections[1], col2X, startY);  // CPL
-    
-    // Klavye kısayollarını iki sütuna böl
+    // Klavye kısayollarını iki sütuna böl (sol tarafta)
     const keyboardShortcuts = sections[2];
     const halfPoint = Math.ceil(keyboardShortcuts.items.length / 2);
     
-    // Sol yarı - başlıkla birlikte
+    // Sol yarı - başlıkla birlikte (1. sütun)
     let keyboardY = startY;
     ctx.fillStyle = keyboardShortcuts.color;
     ctx.font = 'bold 24px Arial';
     ctx.textAlign = 'left';
-    ctx.fillText(keyboardShortcuts.title, col3X, keyboardY);
+    ctx.fillText(keyboardShortcuts.title, col1X, keyboardY);
     keyboardY += 40;
     
     ctx.font = '17px Arial';
     keyboardShortcuts.items.slice(0, halfPoint).forEach((item) => {
       ctx.fillStyle = keyboardShortcuts.color;
       ctx.beginPath();
-      ctx.arc(col3X, keyboardY - 5, 5, 0, Math.PI * 2);
+      ctx.arc(col1X, keyboardY - 5, 5, 0, Math.PI * 2);
       ctx.fill();
       
       ctx.fillStyle = meta.colors.text;
-      ctx.fillText(item.command, col3X + 14, keyboardY);
+      ctx.fillText(item.command, col1X + 14, keyboardY);
       
       ctx.fillStyle = '#8b949e';
       ctx.font = '15px Arial';
-      ctx.fillText(`– ${item.description}`, col3X + 14, keyboardY + 20);
+      ctx.fillText(`– ${item.description}`, col1X + 14, keyboardY + 20);
       ctx.font = '17px Arial';
       
       keyboardY += 45;
     });
     
-    // Sağ yarı - başlık olmadan
+    // Sağ yarı - başlık olmadan (2. sütun)
     keyboardY = startY + 40;
     keyboardShortcuts.items.slice(halfPoint).forEach((item) => {
       ctx.fillStyle = keyboardShortcuts.color;
       ctx.beginPath();
-      ctx.arc(col4X, keyboardY - 5, 5, 0, Math.PI * 2);
+      ctx.arc(col2X, keyboardY - 5, 5, 0, Math.PI * 2);
       ctx.fill();
       
       ctx.fillStyle = meta.colors.text;
-      ctx.fillText(item.command, col4X + 14, keyboardY);
+      ctx.fillText(item.command, col2X + 14, keyboardY);
       
       ctx.fillStyle = '#8b949e';
       ctx.font = '15px Arial';
-      ctx.fillText(`– ${item.description}`, col4X + 14, keyboardY + 20);
+      ctx.fillText(`– ${item.description}`, col2X + 14, keyboardY + 20);
       ctx.font = '17px Arial';
       
       keyboardY += 45;
     });
+    
+    // MSC ve CPL sağ tarafta (3. ve 4. sütunlar)
+    drawSection(sections[0], col3X, startY);  // MSC
+    drawSection(sections[1], col4X, startY);  // CPL
   }
   
   // Alt bilgi
