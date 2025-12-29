@@ -233,14 +233,14 @@ async function createWidescreenWallpaper(data) {
     
     // Bölüm başlığı
     ctx.fillStyle = section.color;
-    ctx.font = 'bold 26px Arial';
+    ctx.font = 'bold 28px Arial';
     ctx.textAlign = 'left';
     ctx.fillText(section.title, x, currentY);
     
-    currentY += 45;
+    currentY += 50;
     
     // Maddeler
-    ctx.font = '19px Arial';
+    ctx.font = '21px Arial';
     
     const itemsToShow = maxItems ? section.items.slice(0, maxItems) : section.items;
     
@@ -248,22 +248,22 @@ async function createWidescreenWallpaper(data) {
       // Nokta
       ctx.fillStyle = section.color;
       ctx.beginPath();
-      ctx.arc(x, currentY - 5, 6, 0, Math.PI * 2);
+      ctx.arc(x, currentY - 6, 7, 0, Math.PI * 2);
       ctx.fill();
       
       // Komut
       ctx.fillStyle = meta.colors.text;
       const commandText = item.command;
-      ctx.fillText(commandText, x + 16, currentY);
+      ctx.fillText(commandText, x + 18, currentY);
       
       // Açıklama
       ctx.fillStyle = '#8b949e';
-      ctx.font = '17px Arial';
+      ctx.font = '18px Arial';
       const descText = `– ${item.description}`;
-      ctx.fillText(descText, x + 16, currentY + 23);
-      ctx.font = '19px Arial';
+      ctx.fillText(descText, x + 18, currentY + 26);
+      ctx.font = '21px Arial';
       
-      currentY += 52;
+      currentY += 58;
     });
     
     return currentY;
@@ -278,46 +278,46 @@ async function createWidescreenWallpaper(data) {
     // Sol yarı - başlıkla birlikte (1. sütun)
     let keyboardY = startY;
     ctx.fillStyle = keyboardShortcuts.color;
-    ctx.font = 'bold 26px Arial';
+    ctx.font = 'bold 28px Arial';
     ctx.textAlign = 'left';
     ctx.fillText(keyboardShortcuts.title, col1X, keyboardY);
-    keyboardY += 45;
+    keyboardY += 50;
     
-    ctx.font = '19px Arial';
+    ctx.font = '21px Arial';
     keyboardShortcuts.items.slice(0, halfPoint).forEach((item) => {
       ctx.fillStyle = keyboardShortcuts.color;
       ctx.beginPath();
-      ctx.arc(col1X, keyboardY - 5, 6, 0, Math.PI * 2);
+      ctx.arc(col1X, keyboardY - 6, 7, 0, Math.PI * 2);
       ctx.fill();
       
       ctx.fillStyle = meta.colors.text;
-      ctx.fillText(item.command, col1X + 16, keyboardY);
+      ctx.fillText(item.command, col1X + 18, keyboardY);
       
       ctx.fillStyle = '#8b949e';
-      ctx.font = '17px Arial';
-      ctx.fillText(`– ${item.description}`, col1X + 16, keyboardY + 23);
-      ctx.font = '19px Arial';
+      ctx.font = '18px Arial';
+      ctx.fillText(`– ${item.description}`, col1X + 18, keyboardY + 26);
+      ctx.font = '21px Arial';
       
-      keyboardY += 52;
+      keyboardY += 58;
     });
     
     // Sağ yarı - başlık olmadan (2. sütun)
-    keyboardY = startY + 45;
+    keyboardY = startY + 50;
     keyboardShortcuts.items.slice(halfPoint).forEach((item) => {
       ctx.fillStyle = keyboardShortcuts.color;
       ctx.beginPath();
-      ctx.arc(col2X, keyboardY - 5, 6, 0, Math.PI * 2);
+      ctx.arc(col2X, keyboardY - 6, 7, 0, Math.PI * 2);
       ctx.fill();
       
       ctx.fillStyle = meta.colors.text;
-      ctx.fillText(item.command, col2X + 16, keyboardY);
+      ctx.fillText(item.command, col2X + 18, keyboardY);
       
       ctx.fillStyle = '#8b949e';
-      ctx.font = '17px Arial';
-      ctx.fillText(`– ${item.description}`, col2X + 16, keyboardY + 23);
-      ctx.font = '19px Arial';
+      ctx.font = '18px Arial';
+      ctx.fillText(`– ${item.description}`, col2X + 18, keyboardY + 26);
+      ctx.font = '21px Arial';
       
-      keyboardY += 52;
+      keyboardY += 58;
     });
     
     // MSC ve CPL sağ tarafta (3. ve 4. sütunlar)
