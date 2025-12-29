@@ -235,7 +235,6 @@ async function createPDF(data) {
     const maxItems = Math.max(col1.length, col2.length);
     const leftX = doc.page.margins.left; // Sol margin
     const rightX = 300; // Sağ sütun başlangıcı
-    const itemHeight = 20; // Her satır yüksekliği - arttırıldı
     
     for (let i = 0; i < maxItems; i++) {
       let currentY = doc.y;
@@ -266,35 +265,39 @@ async function createPDF(data) {
         currentY = doc.y; // Yeni Y pozisyonunu güncelle
       }
       
+      let maxHeight = 0;
+      
       // Sol sütun
       if (col1[i]) {
         const leftText = `• ${col1[i].command} – ${col1[i].description}`;
+        const startY = currentY;
         doc.fillColor('#333')
            .font(useArialFont ? 'Arial' : 'Helvetica')
            .text(leftText, leftX, currentY, { 
              width: 220,
-             lineGap: 2,
+             lineGap: 3,
              align: 'left'
            });
+        maxHeight = Math.max(maxHeight, doc.y - startY);
       }
       
       // Sağ sütun - Y pozisyonunu sabit tut
       if (col2[i]) {
         const rightText = `• ${col2[i].command} – ${col2[i].description}`;
-        const savedY = doc.y; // Mevcut Y pozisyonunu kaydet
+        const startY = currentY;
         doc.y = currentY; // Y'yi tekrar başlangıç pozisyonuna getir
         doc.fillColor('#333')
            .font(useArialFont ? 'Arial' : 'Helvetica')
            .text(rightText, rightX, currentY, { 
              width: 220,
-             lineGap: 2,
+             lineGap: 3,
              align: 'left'
            });
-        doc.y = Math.max(savedY, doc.y); // En büyük Y değerini kullan
+        maxHeight = Math.max(maxHeight, doc.y - startY);
       }
       
-      // Sonraki satıra geç
-      doc.y = currentY + itemHeight;
+      // Sonraki satıra geç - en uzun satırın yüksekliğini kullan
+      doc.y = currentY + maxHeight + 5; // 5px ekstra boşluk
     }
     
     doc.moveDown(1);

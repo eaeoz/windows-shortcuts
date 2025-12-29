@@ -78,7 +78,7 @@
         {"command": "Win + Ctrl + D", "description": "Yeni sanal masaüstü"},
         {"command": "Win + Ctrl + ←/→", "description": "Sanal masaüstü geçişi"},
         {"command": "Win + P", "description": "Projeksiyon modu"},
-        {"command": "Win + Shift + ←/→", "description": "Pencereyi monitörler arası taşı"},
+        {"command": "Win + Shift + ←/→", "description": "monitor arasi pencere tasi"},
         {"command": "Ctrl + Shift + N", "description": "Yeni klasör"},
         {"command": "Alt + Enter", "description": "Özellikler"},
         {"command": "Shift + Delete", "description": "Kalıcı sil"}
