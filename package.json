@@ -1,0 +1,26 @@
+{
+  "name": "windows-shortcuts-generator",
+  "version": "1.0.0",
+  "description": "Windows kısayolları için JSON'dan otomatik PDF, wallpaper ve HTML üretir",
+  "main": "script.js",
+  "scripts": {
+    "start": "node script.js",
+    "wallpaper": "node script.js --wallpaper",
+    "pdf": "node script.js --pdf",
+    "html": "node script.js --html",
+    "all": "node script.js --all",
+    "dev": "node script.js --watch"
+  },
+  "keywords": ["windows", "shortcuts", "cli", "generator"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.58",
+    "pdfkit": "^0.14.0",
+    "chokidar": "^3.5.3",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  }
+}

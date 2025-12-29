@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "title": "Windows Kullanım Rehberi",
+    "subtitle": "MSC Komutları • CPL Araçları • Klavye Kısayolları",
+    "footer": "windows-kisayollari.com | Güncelleme: 2024 | Node.js ile oluşturuldu",
+    "colors": {
+      "primary": "#2d7df5",
+      "secondary": "#ff6b00",
+      "accent": "#10b981",
+      "background": "#0d1117",
+      "text": "#c9d1d9"
+    }
+  },
+  "sections": [
+    {
+      "id": "msc",
+      "title": "🖥️ MSC KOMUTLARI",
+      "icon": "🖥️",
+      "color": "#ff6b00",
+      "items": [
+        {"command": "eventvwr.msc", "description": "Olay Görüntüleyici"},
+        {"command": "taskschd.msc", "description": "Görev Zamanlayıcı"},
+        {"command": "services.msc", "description": "Hizmetler"},
+        {"command": "devmgmt.msc", "description": "Aygıt Yöneticisi"},
+        {"command": "diskmgmt.msc", "description": "Disk Yönetimi"},
+        {"command": "compmgmt.msc", "description": "Bilgisayar Yönetimi"},
+        {"command": "gpedit.msc", "description": "Grup İlkesi"},
+        {"command": "lusrmgr.msc", "description": "Kullanıcılar"},
+        {"command": "secpol.msc", "description": "Yerel Güvenlik"},
+        {"command": "perfmon.msc", "description": "Performans"},
+        {"command": "wf.msc", "description": "Güvenlik Duvarı"},
+        {"command": "fsmgmt.msc", "description": "Paylaşılan Klasörler"}
+      ]
+    },
+    {
+      "id": "cpl",
+      "title": "⚙️ CPL ARAÇLARI",
+      "icon": "⚙️",
+      "color": "#d32f2f",
+      "items": [
+        {"command": "appwiz.cpl", "description": "Program Ekle/Kaldır"},
+        {"command": "ncpa.cpl", "description": "Ağ Bağlantıları"},
+        {"command": "sysdm.cpl", "description": "Sistem Özellikleri"},
+        {"command": "inetcpl.cpl", "description": "İnternet Özellikleri"},
+        {"command": "timedate.cpl", "description": "Tarih ve Saat"},
+        {"command": "desk.cpl", "description": "Ekran Çözünürlüğü"},
+        {"command": "mmsys.cpl", "description": "Ses Ayarları"},
+        {"command": "powercfg.cpl", "description": "Güç Seçenekleri"},
+        {"command": "firewall.cpl", "description": "Windows Güvenlik Duvarı"},
+        {"command": "main.cpl", "description": "Fare Özellikleri"},
+        {"command": "telephon.cpl", "description": "Telefon ve Modem"},
+        {"command": "intl.cpl", "description": "Bölge ve Dil"}
+      ]
+    },
+    {
+      "id": "shortcuts",
+      "title": "⌨️ KLAVYE KISAYOLLARI",
+      "icon": "⌨️",
+      "color": "#2d7df5",
+      "items": [
+        {"command": "Win + R", "description": "Çalıştır penceresi"},
+        {"command": "Win + E", "description": "Dosya Gezgini"},
+        {"command": "Win + I", "description": "Windows Ayarları"},
+        {"command": "Win + X", "description": "Hızlı Bağlantı menüsü"},
+        {"command": "Win + D", "description": "Masaüstünü göster/gizle"},
+        {"command": "Win + L", "description": "Bilgisayarı kilitle"},
+        {"command": "Alt + Tab", "description": "Pencere değiştir"},
+        {"command": "Alt + F4", "description": "Pencereyi kapat"},
+        {"command": "Ctrl + Shift + Esc", "description": "Görev Yöneticisi"},
+        {"command": "Win + Shift + S", "description": "Ekran alıntısı aracı"},
+        {"command": "Win + V", "description": "Pano geçmişi"},
+        {"command": "Win + .", "description": "Emoji paneli"},
+        {"command": "Win + ←/→", "description": "Pencereyi yarı ekrana yerleştir"},
+        {"command": "Win + ↑/↓", "description": "Pencereyi büyüt/küçült"},
+        {"command": "F2", "description": "Yeniden adlandır"},
+        {"command": "F11", "description": "Tam ekran modu"},
+        {"command": "Win + Tab", "description": "Zaman çizelgesi"},
+        {"command": "Win + Ctrl + D", "description": "Yeni sanal masaüstü"},
+        {"command": "Win + Ctrl + ←/→", "description": "Sanal masaüstü geçişi"},
+        {"command": "Win + P", "description": "Projeksiyon modu"},
+        {"command": "Win + Shift + ←/→", "description": "Pencereyi monitörler arası taşı"},
+        {"command": "Ctrl + Shift + N", "description": "Yeni klasör"},
+        {"command": "Alt + Enter", "description": "Özellikler"},
+        {"command": "Shift + Delete", "description": "Kalıcı sil"}
+      ]
+    }
+  ],
+  "layouts": {
+    "wallpaper": {
+      "width": 1920,
+      "height": 1080,
+      "columns": 3,
+      "fontSizes": {
+        "title": 52,
+        "subtitle": 28,
+        "section": 32,
+        "item": 24,
+        "footer": 20
+      }
+    },
+    "pdf": {
+      "pageSize": "A4",
+      "margins": 50,
+      "fontSizes": {
+        "title": 24,
+        "subtitle": 14,
+        "section": 16,
+        "item": 11,
+        "footer": 10
+      }
+    }
+  }
+}
