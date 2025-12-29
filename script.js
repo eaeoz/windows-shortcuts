@@ -222,9 +222,9 @@ async function createPDF(data) {
     const col2 = section.items.slice(itemsPerColumn);
     
     const maxItems = Math.max(col1.length, col2.length);
-    const leftX = 72; // Sol margin
+    const leftX = doc.page.margins.left; // Sol margin
     const rightX = 300; // Sağ sütun başlangıcı
-    const itemHeight = 18; // Her satır yüksekliği
+    const itemHeight = 20; // Her satır yüksekliği - arttırıldı
     
     for (let i = 0; i < maxItems; i++) {
       const currentY = doc.y;
@@ -241,19 +241,24 @@ async function createPDF(data) {
            .font(useArialFont ? 'Arial' : 'Helvetica')
            .text(leftText, leftX, currentY, { 
              width: 220,
-             lineGap: 2
+             lineGap: 2,
+             align: 'left'
            });
       }
       
-      // Sağ sütun
+      // Sağ sütun - Y pozisyonunu sabit tut
       if (col2[i]) {
         const rightText = `• ${col2[i].command} – ${col2[i].description}`;
+        const savedY = doc.y; // Mevcut Y pozisyonunu kaydet
+        doc.y = currentY; // Y'yi tekrar başlangıç pozisyonuna getir
         doc.fillColor('#333')
            .font(useArialFont ? 'Arial' : 'Helvetica')
            .text(rightText, rightX, currentY, { 
              width: 220,
-             lineGap: 2
+             lineGap: 2,
+             align: 'left'
            });
+        doc.y = Math.max(savedY, doc.y); // En büyük Y değerini kullan
       }
       
       // Sonraki satıra geç
@@ -279,19 +284,21 @@ async function createPDF(data) {
     
     doc.moveDown(1);
     
-    // İstatistikler
-    doc.fontSize(10)
+    // İstatistikler - underline kaldırıldı
+    doc.fontSize(11)
        .fillColor('#333')
        .font(useArialFont ? 'Arial-Bold' : 'Helvetica-Bold')
-       .text('📊 İstatistikler:', { underline: true });
+       .text('📊 İstatistikler:');
     
-    doc.moveDown(0.3);
+    doc.moveDown(0.5);
     
-    doc.font(useArialFont ? 'Arial' : 'Helvetica');
+    doc.fontSize(10)
+       .font(useArialFont ? 'Arial' : 'Helvetica');
     sections.forEach(section => {
       doc.text(`  ${section.icon} ${section.title.split(' ').slice(1).join(' ')}: ${section.items.length} öğe`);
     });
     
+    doc.moveDown(0.3);
     doc.text(`  📈 Toplam: ${totalItems} kısayol ve komut`);
   }
   
