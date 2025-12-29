@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Kullanım Rehberi</title>
+    <style>
+        :root {
+            --primary: #2d7df5;
+            --secondary: #ff6b00;
+            --accent: #10b981;
+            --bg: #0d1117;
+            --text: #c9d1d9;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, #1a1f2e 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #8b949e;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+        }
+        
+        .section-icon {
+            font-size: 1.8em;
+        }
+        
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .command {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 0.95em;
+        }
+        
+        .description {
+            color: #c9d1d9;
+            text-align: right;
+            max-width: 60%;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-download {
+            background: var(--accent);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #8b949e;
+            font-size: 0.9em;
+        }
+        
+        .search-box {
+            max-width: 500px;
+            margin: 30px auto;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: white;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(45, 125, 245, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .item {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .description {
+                max-width: 100%;
+                text-align: center;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+        
+        .highlight {
+            background: rgba(var(--primary-rgb), 0.2);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Windows Kullanım Rehberi</h1>
+            <p class="subtitle">MSC Komutları • CPL Araçları • Klavye Kısayolları</p>
+            
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="🔍 Kısayol veya komut ara..." id="searchInput">
+            </div>
+            
+            <div class="stats">
+                
+                    <div class="stat-item" style="border-left: 3px solid #ff6b00">
+                        <span class="section-icon">🖥️</span>
+                        <span>12</span>
+                    </div>
+                
+                    <div class="stat-item" style="border-left: 3px solid #d32f2f">
+                        <span class="section-icon">⚙️</span>
+                        <span>12</span>
+                    </div>
+                
+                    <div class="stat-item" style="border-left: 3px solid #2d7df5">
+                        <span class="section-icon">⌨️</span>
+                        <span>24</span>
+                    </div>
+                
+            </div>
+        </header>
+        
+        <div class="grid">
+            
+                <div class="section" style="border-left-color: #ff6b00">
+                    <div class="section-header">
+                        <span class="section-icon">🖥️</span>
+                        <h3>🖥️ MSC KOMUTLARI</h3>
+                    </div>
+                    
+                    <div class="item-list">
+                        
+                            <div class="item" data-search="eventvwr.msc olay görüntüleyici">
+                                <span class="command">eventvwr.msc</span>
+                                <span class="description">Olay Görüntüleyici</span>
+                            </div>
+                        
+                            <div class="item" data-search="taskschd.msc görev zamanlayıcı">
+                                <span class="command">taskschd.msc</span>
+                                <span class="description">Görev Zamanlayıcı</span>
+                            </div>
+                        
+                            <div class="item" data-search="services.msc hizmetler">
+                                <span class="command">services.msc</span>
+                                <span class="description">Hizmetler</span>
+                            </div>
+                        
+                            <div class="item" data-search="devmgmt.msc aygıt yöneticisi">
+                                <span class="command">devmgmt.msc</span>
+                                <span class="description">Aygıt Yöneticisi</span>
+                            </div>
+                        
+                            <div class="item" data-search="diskmgmt.msc disk yönetimi">
+                                <span class="command">diskmgmt.msc</span>
+                                <span class="description">Disk Yönetimi</span>
+                            </div>
+                        
+                            <div class="item" data-search="compmgmt.msc bilgisayar yönetimi">
+                                <span class="command">compmgmt.msc</span>
+                                <span class="description">Bilgisayar Yönetimi</span>
+                            </div>
+                        
+                            <div class="item" data-search="gpedit.msc grup i̇lkesi">
+                                <span class="command">gpedit.msc</span>
+                                <span class="description">Grup İlkesi</span>
+                            </div>
+                        
+                            <div class="item" data-search="lusrmgr.msc kullanıcılar">
+                                <span class="command">lusrmgr.msc</span>
+                                <span class="description">Kullanıcılar</span>
+                            </div>
+                        
+                            <div class="item" data-search="secpol.msc yerel güvenlik">
+                                <span class="command">secpol.msc</span>
+                                <span class="description">Yerel Güvenlik</span>
+                            </div>
+                        
+                            <div class="item" data-search="perfmon.msc performans">
+                                <span class="command">perfmon.msc</span>
+                                <span class="description">Performans</span>
+                            </div>
+                        
+                            <div class="item" data-search="wf.msc güvenlik duvarı">
+                                <span class="command">wf.msc</span>
+                                <span class="description">Güvenlik Duvarı</span>
+                            </div>
+                        
+                            <div class="item" data-search="fsmgmt.msc paylaşılan klasörler">
+                                <span class="command">fsmgmt.msc</span>
+                                <span class="description">Paylaşılan Klasörler</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="section" style="border-left-color: #d32f2f">
+                    <div class="section-header">
+                        <span class="section-icon">⚙️</span>
+                        <h3>⚙️ CPL ARAÇLARI</h3>
+                    </div>
+                    
+                    <div class="item-list">
+                        
+                            <div class="item" data-search="appwiz.cpl program ekle/kaldır">
+                                <span class="command">appwiz.cpl</span>
+                                <span class="description">Program Ekle/Kaldır</span>
+                            </div>
+                        
+                            <div class="item" data-search="ncpa.cpl ağ bağlantıları">
+                                <span class="command">ncpa.cpl</span>
+                                <span class="description">Ağ Bağlantıları</span>
+                            </div>
+                        
+                            <div class="item" data-search="sysdm.cpl sistem özellikleri">
+                                <span class="command">sysdm.cpl</span>
+                                <span class="description">Sistem Özellikleri</span>
+                            </div>
+                        
+                            <div class="item" data-search="inetcpl.cpl i̇nternet özellikleri">
+                                <span class="command">inetcpl.cpl</span>
+                                <span class="description">İnternet Özellikleri</span>
+                            </div>
+                        
+                            <div class="item" data-search="timedate.cpl tarih ve saat">
+                                <span class="command">timedate.cpl</span>
+                                <span class="description">Tarih ve Saat</span>
+                            </div>
+                        
+                            <div class="item" data-search="desk.cpl ekran çözünürlüğü">
+                                <span class="command">desk.cpl</span>
+                                <span class="description">Ekran Çözünürlüğü</span>
+                            </div>
+                        
+                            <div class="item" data-search="mmsys.cpl ses ayarları">
+                                <span class="command">mmsys.cpl</span>
+                                <span class="description">Ses Ayarları</span>
+                            </div>
+                        
+                            <div class="item" data-search="powercfg.cpl güç seçenekleri">
+                                <span class="command">powercfg.cpl</span>
+                                <span class="description">Güç Seçenekleri</span>
+                            </div>
+                        
+                            <div class="item" data-search="firewall.cpl windows güvenlik duvarı">
+                                <span class="command">firewall.cpl</span>
+                                <span class="description">Windows Güvenlik Duvarı</span>
+                            </div>
+                        
+                            <div class="item" data-search="main.cpl fare özellikleri">
+                                <span class="command">main.cpl</span>
+                                <span class="description">Fare Özellikleri</span>
+                            </div>
+                        
+                            <div class="item" data-search="telephon.cpl telefon ve modem">
+                                <span class="command">telephon.cpl</span>
+                                <span class="description">Telefon ve Modem</span>
+                            </div>
+                        
+                            <div class="item" data-search="intl.cpl bölge ve dil">
+                                <span class="command">intl.cpl</span>
+                                <span class="description">Bölge ve Dil</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="section" style="border-left-color: #2d7df5">
+                    <div class="section-header">
+                        <span class="section-icon">⌨️</span>
+                        <h3>⌨️ KLAVYE KISAYOLLARI</h3>
+                    </div>
+                    
+                    <div class="item-list">
+                        
+                            <div class="item" data-search="win + r çalıştır penceresi">
+                                <span class="command">Win + R</span>
+                                <span class="description">Çalıştır penceresi</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + e dosya gezgini">
+                                <span class="command">Win + E</span>
+                                <span class="description">Dosya Gezgini</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + i windows ayarları">
+                                <span class="command">Win + I</span>
+                                <span class="description">Windows Ayarları</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + x hızlı bağlantı menüsü">
+                                <span class="command">Win + X</span>
+                                <span class="description">Hızlı Bağlantı menüsü</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + d masaüstünü göster/gizle">
+                                <span class="command">Win + D</span>
+                                <span class="description">Masaüstünü göster/gizle</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + l bilgisayarı kilitle">
+                                <span class="command">Win + L</span>
+                                <span class="description">Bilgisayarı kilitle</span>
+                            </div>
+                        
+                            <div class="item" data-search="alt + tab pencere değiştir">
+                                <span class="command">Alt + Tab</span>
+                                <span class="description">Pencere değiştir</span>
+                            </div>
+                        
+                            <div class="item" data-search="alt + f4 pencereyi kapat">
+                                <span class="command">Alt + F4</span>
+                                <span class="description">Pencereyi kapat</span>
+                            </div>
+                        
+                            <div class="item" data-search="ctrl + shift + esc görev yöneticisi">
+                                <span class="command">Ctrl + Shift + Esc</span>
+                                <span class="description">Görev Yöneticisi</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + shift + s ekran alıntısı aracı">
+                                <span class="command">Win + Shift + S</span>
+                                <span class="description">Ekran alıntısı aracı</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + v pano geçmişi">
+                                <span class="command">Win + V</span>
+                                <span class="description">Pano geçmişi</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + . emoji paneli">
+                                <span class="command">Win + .</span>
+                                <span class="description">Emoji paneli</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + ←/→ pencereyi yarı ekrana yerleştir">
+                                <span class="command">Win + ←/→</span>
+                                <span class="description">Pencereyi yarı ekrana yerleştir</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + ↑/↓ pencereyi büyüt/küçült">
+                                <span class="command">Win + ↑/↓</span>
+                                <span class="description">Pencereyi büyüt/küçült</span>
+                            </div>
+                        
+                            <div class="item" data-search="f2 yeniden adlandır">
+                                <span class="command">F2</span>
+                                <span class="description">Yeniden adlandır</span>
+                            </div>
+                        
+                            <div class="item" data-search="f11 tam ekran modu">
+                                <span class="command">F11</span>
+                                <span class="description">Tam ekran modu</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + tab zaman çizelgesi">
+                                <span class="command">Win + Tab</span>
+                                <span class="description">Zaman çizelgesi</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + ctrl + d yeni sanal masaüstü">
+                                <span class="command">Win + Ctrl + D</span>
+                                <span class="description">Yeni sanal masaüstü</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + ctrl + ←/→ sanal masaüstü geçişi">
+                                <span class="command">Win + Ctrl + ←/→</span>
+                                <span class="description">Sanal masaüstü geçişi</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + p projeksiyon modu">
+                                <span class="command">Win + P</span>
+                                <span class="description">Projeksiyon modu</span>
+                            </div>
+                        
+                            <div class="item" data-search="win + shift + ←/→ monitor arasi pencere tasi">
+                                <span class="command">Win + Shift + ←/→</span>
+                                <span class="description">monitor arasi pencere tasi</span>
+                            </div>
+                        
+                            <div class="item" data-search="ctrl + shift + n yeni klasör">
+                                <span class="command">Ctrl + Shift + N</span>
+                                <span class="description">Yeni klasör</span>
+                            </div>
+                        
+                            <div class="item" data-search="alt + enter özellikler">
+                                <span class="command">Alt + Enter</span>
+                                <span class="description">Özellikler</span>
+                            </div>
+                        
+                            <div class="item" data-search="shift + delete kalıcı sil">
+                                <span class="command">Shift + Delete</span>
+                                <span class="description">Kalıcı sil</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="actions">
+            <button class="btn" onclick="window.print()">
+                📄 PDF Olarak Kaydet
+            </button>
+            <a href="windows-shortcuts-wallpaper.png" download class="btn">
+                🖼️ Masaüstü Resmi İndir
+            </a>
+            <a href="windows-shortcuts-guide.pdf" download class="btn btn-download">
+                📥 Tam Rehberi İndir
+            </a>
+        </div>
+        
+        <footer>
+            <p>windows-kisayollari.com | Güncelleme: 2024 | Node.js ile oluşturuldu</p>
+            <p style="margin-top: 10px;">Toplam 48 kısayol ve komut</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Arama fonksiyonu
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.item');
+            
+            items.forEach(item => {
+                const searchText = item.dataset.search;
+                if (searchText.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                    
+                    // Vurgulama
+                    if (searchTerm) {
+                        const command = item.querySelector('.command');
+                        const description = item.querySelector('.description');
+                        
+                        command.innerHTML = command.textContent.replace(
+                            new RegExp(searchTerm, 'gi'),
+                            match => `<span class="highlight">${match}</span>`
+                        );
+                        
+                        description.innerHTML = description.textContent.replace(
+                            new RegExp(searchTerm, 'gi'),
+                            match => `<span class="highlight">${match}</span>`
+                        );
+                    }
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+        
+        // Yazdırma için optimize
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.btn, .search-box').forEach(el => el.style.display = 'none');
+        });
+        
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('.btn, .search-box').forEach(el => el.style.display = '');
+        });
+        
+        // Dosya kontrolü
+        document.addEventListener('DOMContentLoaded', () => {
+            const files = ['windows-shortcuts-wallpaper.png', 'windows-shortcuts-guide.pdf'];
+            files.forEach(file => {
+                fetch(file).then(res => {
+                    if (!res.ok) {
+                        const btn = document.querySelector(`a[href="${file}"]`);
+                        if (btn) {
+                            btn.style.opacity = '0.5';
+                            btn.title = 'Dosya henüz oluşturulmadı';
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Kopyalama fonksiyonu
+        document.querySelectorAll('.command').forEach(el => {
+            el.addEventListener('click', function() {
+                const text = this.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = this.textContent;
+                    this.textContent = '✓ Kopyalandı!';
+                    setTimeout(() => this.textContent = original, 2000);
+                });
+            });
+            el.style.cursor = 'pointer';
+            el.title = 'Komutu kopyalamak için tıkla';
+        });
+    </script>
+</body>
+</html>

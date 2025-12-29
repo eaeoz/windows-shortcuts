@@ -125,7 +125,7 @@ async function createWallpaper(data) {
       ctx.fillStyle = '#8b949e';
       ctx.fillText(`– ${item.description}`, leftX + 15, leftY + 22);
       
-      leftY += 42;
+      leftY += 50;
     });
     
     leftY += 30; // Bölümler arası boşluk
@@ -159,7 +159,7 @@ async function createWallpaper(data) {
       ctx.fillStyle = '#8b949e';
       ctx.fillText(`– ${item.description}`, rightX + 15, rightY + 22);
       
-      rightY += 42;
+      rightY += 50;
     });
     
     rightY += 30; // Bölümler arası boşluk
