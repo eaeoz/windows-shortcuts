@@ -204,13 +204,24 @@ async function createPDF(data) {
   
   // Her bölüm için
   sections.forEach(section => {
-    // Bölüm başlığı
+    // Bölüm başlığı - tam sayfa genişliğinde ortalanmış
+    const pageWidth = doc.page.width;
+    const margins = doc.page.margins;
+    
     doc.fontSize(pdf.fontSizes.section)
        .fillColor(section.color)
        .font(useArialFont ? 'Arial-Bold' : 'Helvetica-Bold')
-       .text(`${section.icon} ${section.title.split(' ').slice(1).join(' ')}`);
+       .text(
+         `${section.icon} ${section.title.split(' ').slice(1).join(' ')}`,
+         margins.left,
+         doc.y,
+         {
+           width: pageWidth - margins.left - margins.right,
+           align: 'center'
+         }
+       );
     
-    doc.moveDown(0.3);
+    doc.moveDown(0.5);
     
     // Maddeler
     doc.fontSize(pdf.fontSizes.item)
@@ -227,11 +238,32 @@ async function createPDF(data) {
     const itemHeight = 20; // Her satır yüksekliği - arttırıldı
     
     for (let i = 0; i < maxItems; i++) {
-      const currentY = doc.y;
+      let currentY = doc.y;
       
-      // Sayfa kontrolü - eğer yeterli alan yoksa yeni sayfa
+      // Sayfa kontrolü - eğer yeterli alan yoksa yeni sayfa ve başlığı tekrar yaz
       if (currentY > 700) {
         doc.addPage();
+        // Yeni sayfada başlığı tam sayfa genişliğinde ortalanmış olarak yaz
+        const pageWidth = doc.page.width;
+        const margins = doc.page.margins;
+        
+        doc.fontSize(pdf.fontSizes.section)
+           .fillColor(section.color)
+           .font(useArialFont ? 'Arial-Bold' : 'Helvetica-Bold')
+           .text(
+             `${section.icon} ${section.title.split(' ').slice(1).join(' ')}`,
+             margins.left,
+             doc.y,
+             {
+               width: pageWidth - margins.left - margins.right,
+               align: 'center'
+             }
+           );
+        doc.moveDown(0.5);
+        doc.fontSize(pdf.fontSizes.item)
+           .fillColor('#333')
+           .font(useArialFont ? 'Arial' : 'Helvetica');
+        currentY = doc.y; // Yeni Y pozisyonunu güncelle
       }
       
       // Sol sütun
